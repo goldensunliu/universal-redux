@@ -3,7 +3,7 @@
   "description": "A universal redux renderer (ES6, Webpack, Express)",
   "author": "Buck DeFore <bdefore@gmail.com> (http://github.com/bdefore)",
   "license": "MIT",
-  "version": "3.0.2",
+  "version": "3.1.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bdefore/universal-redux.git"
@@ -29,7 +29,8 @@
     "dev": "./bin/local-dev.sh",
     "lint": "eslint -c .eslintrc src bin config",
     "test": "karma start --single-run",
-    "prepublish": "npm run compile"
+    "prepublish": "npm run compile",
+    "postinstall": "npm run compile"
   },
   "dependencies": {
     "autoprefixer": "6.3.3",

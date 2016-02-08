@@ -21,7 +21,7 @@ function hmr(store) {
   }
 }
 
-export default function create(providedMiddleware, data) {
+export default function create(providedMiddleware, data, req) {
   // TODO: parameterize react-router
   let router;
   if (__CLIENT__) {
@@ -35,10 +35,17 @@ export default function create(providedMiddleware, data) {
   // backward compatibility to 2.x api expecting object for middleware instead of array:
   const customMiddleware = !providedMiddleware.concat ? map(providedMiddleware, (m) => { return m; }) : providedMiddleware;
 
-  const middleware = customMiddleware.concat(defaultMiddleware);
+  let middleware = customMiddleware.concat(defaultMiddleware);
 
   if (__CLIENT__ && __LOGGER__) {
     middleware.push(createLogger({ collapsed: true }));
+  }
+
+  // Add express request as a 2nd argument to the middlewares
+  if (__SERVER__) {
+    middleware = middleware.map((fn) => function (obj) {
+      return fn.call(this, obj, req);
+    });
   }
 
   const useDevtools = __DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__;

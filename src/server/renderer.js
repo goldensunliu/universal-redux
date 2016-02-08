@@ -28,7 +28,7 @@ export default (projectConfig, projectToolsConfig) => {
     }
 
     const middleware = config.redux.middleware ? require(path.resolve(config.redux.middleware)).default : [];
-    const store = createStore(middleware);
+    const store = createStore(middleware, undefined, req);
     const routes = getRoutes(store);
 
     if (__DISABLE_SSR__) {
