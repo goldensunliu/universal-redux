@@ -82,6 +82,7 @@
     "redux-logger": "2.6.1",
     "sass-loader": "3.1.2",
     "serialize-javascript": "1.2.0",
+    "scroll-behavior": "^0.3.2",
     "serve-favicon": "2.3.0",
     "style-loader": "0.13.0",
     "url-loader": "0.5.7",

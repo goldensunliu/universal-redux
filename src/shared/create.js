@@ -4,6 +4,8 @@ import createLogger from 'redux-logger';
 // TODO: parameterize react-router
 import { syncHistory } from 'react-router-redux';
 import { browserHistory } from 'react-router';
+import useScroll from 'scroll-behavior/lib/useStandardScroll';
+
 import createMemoryHistory from 'react-router/lib/createMemoryHistory';
 
 import { compose as composeDevtools, listenToRouter as linkDevtoolsToRouter } from '../client/devtools';
@@ -25,7 +27,7 @@ export default function create(providedMiddleware, data, req) {
   // TODO: parameterize react-router
   let router;
   if (__CLIENT__) {
-    router = syncHistory(browserHistory);
+    router = syncHistory(useScroll(() => browserHistory)());
   } else {
     router = syncHistory(createMemoryHistory());
   }
