@@ -1,12 +1,12 @@
 {
-  "name": "universal-redux",
+  "name": "@sageapp/universal-redux",
   "description": "A universal redux renderer (ES6, Webpack, Express)",
   "author": "Buck DeFore <bdefore@gmail.com> (http://github.com/bdefore)",
   "license": "MIT",
-  "version": "3.1.2",
+  "version": "5.1.2",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bdefore/universal-redux.git"
+    "url": "git+https://github.com/sageapp/universal-redux.git"
   },
   "homepage": "https://github.com/bdefore/universal-redux",
   "keywords": [
