@@ -20,7 +20,7 @@ export default (projectConfig, projectToolsConfig) => {
   const getRoutes = require(path.resolve(config.routes)).default;
   const pretty = new PrettyError();
 
-  const dynamicMiddleware = (originalUrl, headers, send, redirect) => {
+  const dynamicMiddleware = (originalUrl, headers, send, redirect, req) => {
     if (__DEVELOPMENT__) {
       // Do not cache webpack stats: the script file would change since
       // hot module replacement is enabled in the development env
@@ -72,7 +72,7 @@ export default (projectConfig, projectToolsConfig) => {
       (url, resolve) => {
         this.response.redirect(url);
         resolve();
-      });
+      }, this.request);
   }
 
   switch (config.server.webFramework) {
@@ -85,7 +85,8 @@ export default (projectConfig, projectToolsConfig) => {
         dynamicMiddleware(req.originalUrl,
           res._headers,
           (status, body) => res.status(status).send(body),
-          (url) => res.redirect(url));
+          (url) => res.redirect(url),
+          req);
       };
     }
   }
