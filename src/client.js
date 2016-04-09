@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import createStore from './shared/create';
-import { render as renderDevtools } from './client/devtools';
 
 // dependencies of external source. these resolve via webpack aliases
 // as assigned in merge-configs.js
@@ -12,10 +11,9 @@ import createRootClientComponent from 'universal-redux/rootClientComponent';
 const dest = document.getElementById('content');
 
 const store = createStore(middleware, window.__data);
-const devComponent = renderDevtools();
 
 // There is probably no need to be asynchronous here
-createRootClientComponent(store, __PROVIDERS__, devComponent)
+createRootClientComponent(store, __PROVIDERS__)
   .then((root) => {
     ReactDOM.render(root, dest);
 

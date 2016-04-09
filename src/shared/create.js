@@ -8,8 +8,7 @@ import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
 import createMemoryHistory from 'react-router/lib/createMemoryHistory';
 
-import { compose as composeDevtools, listenToRouter as linkDevtoolsToRouter } from '../client/devtools';
-import { applyMiddleware, createStore } from 'redux';
+import { compose, applyMiddleware, createStore } from 'redux';
 
 // explicit path required for HMR to function. see #7
 import reducers from '../../../../../src/redux/modules';
@@ -39,9 +38,9 @@ export default function create(providedMiddleware, data, req) {
 
   let middleware = customMiddleware.concat(defaultMiddleware);
 
-  if (__CLIENT__ && __LOGGER__) {
-    middleware.push(createLogger({ collapsed: true }));
-  }
+  // if (__CLIENT__ && __LOGGER__) {
+  //   middleware.push(createLogger({ collapsed: true }));
+  // }
 
   // Add express request as a 2nd argument to the middlewares
   if (__SERVER__) {
@@ -50,12 +49,19 @@ export default function create(providedMiddleware, data, req) {
     });
   }
 
-  const useDevtools = __DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__;
-  const finalCreateStore = useDevtools ? composeDevtools(middleware)(createStore) : applyMiddleware(...middleware)(createStore);
+  const devtoolsExtensionMiddleware = () =>
+    __CLIENT__ &&
+    typeof window === 'object' &&
+    typeof window.devToolsExtension === 'function'
+    ? window.devToolsExtension() : f => f
+
+  // const useDevtools = __DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__;
+  const finalCreateStore = compose(
+    applyMiddleware(...middleware),
+    devtoolsExtensionMiddleware()
+  )(createStore)
 
   const store = finalCreateStore(reducers, data);
-
-  linkDevtoolsToRouter(router, store);
 
   hmr(store);
 
